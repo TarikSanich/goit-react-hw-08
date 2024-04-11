@@ -1,0 +1,52 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.68);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+}
+
+.content {
+  padding: 20px;
+  border-radius: 12px;
+  background-color: white;
+  height: 300px;
+  width: 450px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 10px;
+  align-items: center;
+  border: 1px solid rgb(131, 131, 131);
+  border-radius: 8px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+}
+
+.buttonGroup {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+
+.button {
+  width: 90px;
+  height: 44px;
+}
