@@ -2,7 +2,6 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 
-// отримання масиву контактів, GET @/contacts
 export const fetchContacts = createAsyncThunk(
   'contacts/fetchAll',
   async (_, thunkAPI) => {
@@ -16,13 +15,11 @@ export const fetchContacts = createAsyncThunk(
       return response.data;
     } catch (error) {
       toast.error(`fetchContacts rejected: ${error.message}`);
-      //обробка помилок та надання резервного значення
       return thunkAPI.rejectWithValue(error.message);
     }
   }
 );
 
-//  додавання нового контакту, POST @/contacts
 export const addContact = createAsyncThunk(
   'contacts/addContact',
   async (newContact, thunkAPI) => {
@@ -40,7 +37,6 @@ export const addContact = createAsyncThunk(
   }
 );
 
-// видалення контакту за ID, DELETE @ /contacts/:id
 export const deleteContact = createAsyncThunk(
   'contacts/deleteContact',
   async (contactId, thunkAPI) => {
@@ -50,14 +46,13 @@ export const deleteContact = createAsyncThunk(
         icon: '👍',
         style: { gap: '5px' },
       });
-      return contactId; // Повертаємо ID видаленого контакту
+      return contactId;
     } catch (error) {
       toast.error(`Contact is not deleted: ${error.message}`);
       return thunkAPI.rejectWithValue(error.message);
     }
   }
 );
-// оновлення контакту по ID, PATCH   @ /contacts/:id
 export const updateContact = createAsyncThunk(
   'contacts/updateContact',
   async ({ id, number, name }, thunkAPI) => {
