@@ -1,5 +1,10 @@
-import { Navigate } from 'react-router-dom';
+/**
+ * - If the user is logged in, render the component
+ * - Otherwise render <Navigate> to redirectTo
+ */
+
 import { useSelector } from 'react-redux';
+import { Navigate } from 'react-router-dom';
 import {
   selectIsLoggedIn,
   selectIsRefreshing,
@@ -12,5 +17,5 @@ export const PrivateRoute = ({
   const isLoggedIn = useSelector(selectIsLoggedIn);
   const isRefreshing = useSelector(selectIsRefreshing);
 
-  return isLoggedIn && !isRefreshing ? Component : <Navigate to={redirectTo} />;
+  return isRefreshing || isLoggedIn ? Component : <Navigate to={redirectTo} />;
 };

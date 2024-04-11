@@ -1,7 +1,15 @@
-.searchbox {
-  padding: 10px 0;
+.wraper {
+  display: flex;
+  flex-direction: column;
 }
-
-.input {
-  width: 360px;
+.label {
+  color: blue;
+}
+.field {
+  display: flex;
+  width: 400px;
+  border-radius: 4px;
+  background-color: transparent;
+  color: inherit;
+  border: 2px solid;
 }

@@ -1,62 +1,62 @@
-import { Formik, Form, Field } from 'formik';
+import css from './ContactForm.module.css';
+//npm install formik yup // formik - бібл форм  + yup - бібл валідації
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+//namespace import
 import * as Yup from 'yup';
-import { ErrorMessage } from 'formik';
-import { nanoid } from 'nanoid';
+//хук унікальних ідентифікаторів полів useId
+import { useId } from 'react';
 import { useDispatch } from 'react-redux';
 import { addContact } from '../../redux/contacts/operations';
-import css from './ContactForm.module.css';
 
-const ContactSchema = Yup.object().shape({
+// Об'являємо схему валідації об'єкта
+const ContactFormSchema = Yup.object().shape({
   name: Yup.string()
-    .min(3, 'Too Short!')
-    .max(50, 'Too Long!')
+    .min(3, 'Too short name!')
+    .max(50, 'Too long name!')
     .required('Required'),
   number: Yup.string()
-    .min(3, 'Too Short!')
-    .max(50, 'Too Long!')
+    .min(3, 'Too short number!')
+    .max(50, 'Too long number!')
     .required('Required'),
 });
 
-const initialValues = {
-  name: '',
-  number: '',
-};
-
 export default function ContactForm() {
-  const nameFieldId = nanoid();
-  const numberFieldId = nanoid();
-  const dispatch = useDispatch();
-
-  const handleSubmit = (values, actions) => {
-    dispatch(
-      addContact({
-        name: values.name,
-        number: values.number,
-      })
-    );
-
-    actions.resetForm();
-  };
+  const nameFieldId = useId();
+  const numberFieldId = useId();
+  const dispatch = useDispatch(); // Отримання функції dispatch з Redux store
 
   return (
     <Formik
-      initialValues={initialValues}
-      onSubmit={handleSubmit}
-      validationSchema={ContactSchema}
+      initialValues={{
+        id: '',
+        name: '',
+        number: '',
+      }}
+      onSubmit={(values, { resetForm }) => {
+        const newContact = {
+          name: values.name,
+          number: values.number,
+        };
+        dispatch(addContact(newContact)); // Відправка екшену додавання контакту
+        resetForm(); //скидання форми
+      }}
+      validationSchema={ContactFormSchema} // схема валидации
     >
       <Form className={css.form}>
-        <div className={css.field}>
-          <label htmlFor={nameFieldId}>Name</label>
-          <Field type="text" name="name" id={nameFieldId} />
-          <ErrorMessage className={css.error} name="name" component="span" />
-        </div>
-
-        <div className={css.field}>
-          <label htmlFor={numberFieldId}>Number</label>
-          <Field type="text" name="number" id={numberFieldId} />
-          <ErrorMessage className={css.error} name="number" component="span" />
-        </div>
-        <button className={css.button} type="submit">
+        <label htmlFor={nameFieldId}>Name</label>
+        <Field className={css.field} type="text" name="name" id={nameFieldId} />
+        <ErrorMessage className={css.error} name="name" component="span" />
+        <label htmlFor={numberFieldId}>Number</label>
+        <Field
+          className={css.field}
+          type="tel"
+          name="number"
+          id={numberFieldId}
+          pattern="[0-9]{3}-[0-9]{2}-[0-9]{2}"
+          placeholder="123-45-67"
+        />
+        <ErrorMessage className={css.error} name="number" component="span" />
+        <button className={css.btn} type="submit">
           Add contact
         </button>
       </Form>

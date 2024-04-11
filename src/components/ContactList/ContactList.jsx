@@ -1,18 +1,32 @@
-import Contact from '../Contact/Contact';
-import { useSelector } from 'react-redux';
-import { selectFilteredContacts } from '../../redux/filters//selectors';
+//імпорт CSS-модуля
 import css from './ContactList.module.css';
+import Contact from '../Contact/Contact';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { selectVisibleContacts } from '../../redux/contacts/selectors';
+import { deleteContact } from '../../redux/contacts/operations';
 
 export default function ContactList() {
-  const visibleContacts = useSelector(selectFilteredContacts);
+  const dispatch = useDispatch();
+
+  const handleDeleteContact = contactId => {
+    dispatch(deleteContact(contactId));
+  };
+
+  //використання селектора для фільтрування контактів
+  const filteredContacts = useSelector(selectVisibleContacts);
 
   return (
-    <ul>
-      {visibleContacts.map(contact => (
-        <li className={css.item} key={contact.id}>
-          <Contact data={contact} />
-        </li>
+    <div className={css.contactList}>
+      {filteredContacts.map(({ id, name, number }) => (
+        <Contact
+          key={id}
+          id={id}
+          name={name}
+          number={number}
+          onDelete={handleDeleteContact}
+        />
       ))}
-    </ul>
+    </div>
   );
 }
